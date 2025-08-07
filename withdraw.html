@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EarnWeb - Withdraw</title>
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  body {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    margin: 0;
+    display: flex; justify-content: center; align-items: center;
+    height: 100vh;
+    perspective: 1200px;
+  }
+  .container {
+    background: rgba(255 255 255 / 0.15);
+    border-radius: 20px;
+    padding: 40px 30px;
+    width: 360px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    transform-style: preserve-3d;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+  }
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  input[type="number"], input[type="text"] {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
+    margin-bottom: 20px;
+    outline: none;
+  }
+  button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 15px;
+    border: none;
+    background: #764ba2;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background: #667eea;
+  }
+  .message {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Withdraw Request</h2>
+  <form id="withdraw-form">
+    <label for="amount">Amount (minimum ৳500):</label>
+    <input type="number" id="amount" min="500" placeholder="Enter amount" required />
+
+    <label for="method">Payment Method:</label>
+    <input type="text" id="method" placeholder="e.g., bkash, nagad, bank" required />
+
+    <label for="account">Account Number:</label>
+    <input type="text" id="account" placeholder="Your account number" required />
+
+    <button type="submit">Submit Withdraw</button>
+  </form>
+
+  <div class="message" id="message"></div>
+</div>
+
+<script>
+  const withdrawForm = document.getElementById('withdraw-form');
+  const messageEl = document.getElementById('message');
+
+  withdrawForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const amount = Number(document.getElementById('amount').value);
+    const method = document.getElementById('method').value.trim();
+    const account = document.getElementById('account').value.trim();
+
+    if (amount < 500) {
+      messageEl.textContent = 'Minimum withdraw amount is ৳500.';
+      return;
+    }
+    if (!method || !account) {
+      messageEl.textContent = 'Please fill all fields.';
+      return;
+    }
+
+    // Simulate withdraw request success
+    messageEl.textContent = `Withdraw request for ৳${amount} via ${method} submitted successfully!`;
+    withdrawForm.reset();
+  });
+</script>
+
+</body>
+</html>
