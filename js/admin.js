@@ -1,42 +1,45 @@
-fetch('data/users.json')
-  .then(res => res.json())
-  .then(users => {
-    const tableBody = document.querySelector("#userTable tbody");
-    const phoneCount = {};
+document.addEventListener("DOMContentLoaded", () => {
+  const userList = JSON.parse(localStorage.getItem("users")) || [];
+  const withdraws = JSON.parse(localStorage.getItem("withdraws")) || [];
 
-    users.forEach(user => {
-      // Count how many accounts from same device
-      phoneCount[user.deviceId] = (phoneCount[user.deviceId] || 0) + 1;
-    });
+  const userTable = document.getElementById("userTable");
+  const withdrawList = document.getElementById("withdraw-list");
 
-    users.forEach(user => {
-      const row = document.createElement("tr");
-
-      row.innerHTML = `
-        <td>${user.email}</td>
-        <td>${user.deviceId}</td>
-        <td>${user.balance || 0} ৳</td>
-        <td>${phoneCount[user.deviceId]}</td>
-        <td>
-          <button onclick="banUser('${user.email}')">Ban</button>
-          <button onclick="blockUser('${user.email}')">Block</button>
-          <button onclick="removeUser('${user.email}')">Remove</button>
-        </td>
-      `;
-
-      tableBody.appendChild(row);
-    });
+  userList.forEach(user => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${user.email}</td>
+      <td>${user.name}</td>
+      <td>${user.balance}</td>
+      <td>${user.accounts || 1}</td>
+      <td>${user.device || "unknown"}</td>
+      <td>
+        <button onclick="banUser('${user.email}')">Ban</button>
+        <button onclick="blacklistUser('${user.email}')">Blacklist</button>
+        <button onclick="removeUser('${user.email}')">Remove</button>
+      </td>
+    `;
+    userTable.appendChild(row);
   });
 
+  withdraws.forEach(w => {
+    const li = document.createElement("li");
+    li.textContent = `${w.email} requested ${w.amount}৳`;
+    withdrawList.appendChild(li);
+  });
+});
+
 function banUser(email) {
-  alert(`🔴 User ${email} has been banned`);
-  // Backend or JSON update logic here
+  alert(`User ${email} has been BANNED`);
 }
-function blockUser(email) {
-  alert(`⛔ User ${email} has been blocked`);
-  // Backend or JSON update logic here
+
+function blacklistUser(email) {
+  alert(`User ${email} is BLACKLISTED`);
 }
+
 function removeUser(email) {
-  alert(`❌ User ${email} has been removed`);
-  // Backend or JSON update logic here
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+  users = users.filter(user => user.email !== email);
+  localStorage.setItem("users", JSON.stringify(users));
+  location.reload();
 }
