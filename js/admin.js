@@ -1,45 +1,77 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const userList = JSON.parse(localStorage.getItem("users")) || [];
-  const withdraws = JSON.parse(localStorage.getItem("withdraws")) || [];
+function showSection(id) {
+  document.querySelectorAll('.admin-section').forEach(sec => sec.style.display = 'none');
+  document.getElementById(id).style.display = 'block';
+}
 
-  const userTable = document.getElementById("userTable");
-  const withdrawList = document.getElementById("withdraw-list");
-
-  userList.forEach(user => {
-    const row = document.createElement("tr");
+// Dummy example for loading account info
+document.addEventListener('DOMContentLoaded', () => {
+  // Load from localStorage or backend
+  const users = JSON.parse(localStorage.getItem('users')) || [];
+  const accountTable = document.querySelector('#accountTable tbody');
+  accountTable.innerHTML = '';
+  users.forEach(user => {
+    const row = document.createElement('tr');
     row.innerHTML = `
       <td>${user.email}</td>
-      <td>${user.name}</td>
       <td>${user.balance}</td>
-      <td>${user.accounts || 1}</td>
-      <td>${user.device || "unknown"}</td>
+      <td>${user.deviceCount || 1}</td>
       <td>
         <button onclick="banUser('${user.email}')">Ban</button>
-        <button onclick="blacklistUser('${user.email}')">Blacklist</button>
+        <button onclick="blackUser('${user.email}')">Black</button>
         <button onclick="removeUser('${user.email}')">Remove</button>
       </td>
     `;
-    userTable.appendChild(row);
+    accountTable.appendChild(row);
   });
 
-  withdraws.forEach(w => {
-    const li = document.createElement("li");
-    li.textContent = `${w.email} requested ${w.amount}৳`;
-    withdrawList.appendChild(li);
+  // Load withdraw requests
+  const requests = JSON.parse(localStorage.getItem('withdrawRequests')) || [];
+  const requestTable = document.querySelector('#withdrawRequests tbody');
+  requestTable.innerHTML = '';
+  requests.forEach((req, index) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${req.email}</td>
+      <td>${req.amount}</td>
+      <td>
+        <button onclick="approveWithdraw(${index})">Approve</button>
+        <button onclick="rejectWithdraw(${index})">Reject</button>
+      </td>
+    `;
+    requestTable.appendChild(row);
   });
 });
 
 function banUser(email) {
-  alert(`User ${email} has been BANNED`);
+  alert(`User ${email} banned!`);
 }
-
-function blacklistUser(email) {
-  alert(`User ${email} is BLACKLISTED`);
+function blackUser(email) {
+  alert(`User ${email} blacklisted!`);
 }
-
 function removeUser(email) {
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-  users = users.filter(user => user.email !== email);
-  localStorage.setItem("users", JSON.stringify(users));
+  alert(`User ${email} removed!`);
+}
+
+function approveWithdraw(index) {
+  const requests = JSON.parse(localStorage.getItem('withdrawRequests')) || [];
+  const req = requests.splice(index, 1)[0];
+  localStorage.setItem('withdrawRequests', JSON.stringify(requests));
+
+  let successList = JSON.parse(localStorage.getItem('withdrawSuccess')) || [];
+  successList.push(req);
+  localStorage.setItem('withdrawSuccess', JSON.stringify(successList));
+  alert(`Approved ${req.email} for ৳${req.amount}`);
+  location.reload();
+}
+
+function rejectWithdraw(index) {
+  const requests = JSON.parse(localStorage.getItem('withdrawRequests')) || [];
+  const req = requests.splice(index, 1)[0];
+  localStorage.setItem('withdrawRequests', JSON.stringify(requests));
+
+  let rejectList = JSON.parse(localStorage.getItem('withdrawReject')) || [];
+  rejectList.push(req);
+  localStorage.setItem('withdrawReject', JSON.stringify(rejectList));
+  alert(`Rejected ${req.email}`);
   location.reload();
 }
