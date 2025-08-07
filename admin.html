@@ -1,88 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Panel - EarnWeb</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel</title>
   <link rel="stylesheet" href="css/style.css">
-  <style>
-    body { font-family: Arial; background: #111; color: #fff; padding: 20px; }
-    h2 { margin-top: 40px; color: #0f0; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { border: 1px solid #555; padding: 10px; text-align: left; }
-    th { background: #222; }
-    .btn { padding: 6px 10px; background: #0f0; color: #000; border: none; cursor: pointer; }
-    .btn-red { background: red; color: #fff; }
-    .btn-yellow { background: orange; color: #000; }
-    input[type="text"], input[type="number"] { width: 100%; padding: 5px; margin-top: 5px; }
-  </style>
 </head>
 <body>
-  <h1>📊 Admin Panel - EarnWeb</h1>
+  <div class="navbar">
+    <h2>Admin Panel</h2>
+    <button onclick="showSection('users')">1. All Accounts</button>
+    <button onclick="showSection('withdrawRequests')">2. Withdraw Requests</button>
+    <button onclick="showSection('withdrawSuccess')">3. Success List</button>
+    <button onclick="showSection('withdrawReject')">4. Reject List</button>
+    <button onclick="showSection('settings')">5. Settings</button>
+  </div>
 
-  <!-- 1. All User Info -->
-  <h2>All Registered Accounts</h2>
-  <table id="userTable">
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>Balance</th>
-        <th>Device ID</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Users will be dynamically listed here -->
-    </tbody>
-  </table>
+  <div id="users" class="section">
+    <h3>All Users</h3>
+    <div id="userList"></div>
+  </div>
 
-  <!-- 2. Withdraw Requests -->
-  <h2>Withdraw Requests</h2>
-  <table id="withdrawRequests">
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>Amount</th>
-        <th>Date</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Withdraw requests will be shown here -->
-    </tbody>
-  </table>
+  <div id="withdrawRequests" class="section" style="display:none;">
+    <h3>Withdraw Requests</h3>
+    <div id="requestList"></div>
+  </div>
 
-  <!-- 3. Successful Withdrawals -->
-  <h2>✅ Successful Withdrawals</h2>
-  <table id="successWithdrawals">
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>Amount</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Successful list -->
-    </tbody>
-  </table>
+  <div id="withdrawSuccess" class="section" style="display:none;">
+    <h3>Successful Withdrawals</h3>
+    <div id="successList"></div>
+  </div>
 
-  <!-- 4. Rejected Withdrawals -->
-  <h2>❌ Rejected Withdrawals</h2>
-  <table id="rejectedWithdrawals">
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>Amount</th>
-        <th>Date</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Rejected list -->
-    </tbody>
-  </table>
+  <div id="withdrawReject" class="section" style="display:none;">
+    <h3>Rejected Withdrawals</h3>
+    <div id="rejectList"></div>
+  </div>
 
-  <!-- Admin control actions can go in JS -->
+  <div id="settings" class="section" style="display:none;">
+    <h3>Settings</h3>
+    <label>Minimum Withdraw Amount:</label>
+    <input type="number" id="minWithdraw" value="20">
+    <button onclick="saveMinWithdraw()">Save</button>
+  </div>
+
   <script src="js/admin.js"></script>
 </body>
 </html>
