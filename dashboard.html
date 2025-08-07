@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EarnWeb - Dashboard</title>
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  body {
+    margin: 0; 
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #764ba2, #667eea);
+    color: white;
+    perspective: 1000px;
+  }
+  .navbar {
+    background: rgba(0,0,0,0.2);
+    padding: 15px 30px;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.3);
+  }
+  .balance {
+    margin: 20px auto;
+    max-width: 300px;
+    background: rgba(255 255 255 / 0.2);
+    padding: 15px;
+    border-radius: 18px;
+    box-shadow: 0 10px 20px rgba(255 255 255 / 0.15);
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transform-style: preserve-3d;
+  }
+  .task-list {
+    max-width: 400px;
+    margin: 20px auto;
+    background: rgba(255 255 255 / 0.15);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+    perspective: 1200px;
+  }
+  .task {
+    background: rgba(0,0,0,0.3);
+    margin-bottom: 15px;
+    border-radius: 14px;
+    padding: 15px 20px;
+    font-weight: 600;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+  }
+  .task:hover {
+    transform: rotateY(15deg) scale(1.05);
+    box-shadow: 0 20px 30px rgba(0,0,0,0.7);
+  }
+  button.withdraw-btn {
+    background: #ff6b6b;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 15px;
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 20px auto;
+    display: block;
+    box-shadow: 0 8px 20px #ff4c4c;
+    transition: background-color 0.3s ease;
+  }
+  button.withdraw-btn:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+  }
+  button.withdraw-btn:hover:not(:disabled) {
+    background: #ff4c4c;
+  }
+  .message {
+    text-align: center;
+    font-weight: 600;
+    margin-top: 10px;
+    min-height: 24px;
+  }
+</style>
+</head>
+<body>
+
+<div class="navbar">EarnWeb Dashboard</div>
+
+<div class="balance">
+  Balance: ৳<span id="balance">0</span>
+</div>
+
+<div class="task-list">
+  <div class="task" onclick="startTask(this)">
+    Complete a 30s task <span>৳2</span>
+  </div>
+</div>
+
+<button id="withdraw-btn" class="withdraw-btn" disabled onclick="withdraw()">Withdraw</button>
+
+<div class="message" id="message"></div>
+
+<script src="js/main.js"></script>
+<script>
+  let balance = 0;
+  const minWithdraw = 500;
+  const perTaskEarn = 2;
+
+  const balanceEl = document.getElementById('balance');
+  const withdrawBtn = document.getElementById('withdraw-btn');
+  const messageEl = document.getElementById('message');
+
+  function updateBalance() {
+    balanceEl.textContent = balance.toFixed(2);
+    withdrawBtn.disabled = balance < minWithdraw;
+  }
+
+  function startTask(el) {
+    if (el.getAttribute('data-running') === 'true') {
+      messageEl.textContent = 'Already running a task! Please wait.';
+      return;
+    }
+    messageEl.textContent = 'Task started... please wait 30 seconds.';
+    el.setAttribute('data-running', 'true');
+    el.style.cursor = 'not-allowed';
+    el.style.opacity = '0.6';
+
+    setTimeout(() => {
+      balance += perTaskEarn;
+      updateBalance();
+      messageEl.textContent = 'Task complete! You earned ৳2.';
+      el.removeAttribute('data-running');
+      el.style.cursor = 'pointer';
+      el.style.opacity = '1';
+    }, 30000);
+  }
+
+  function withdraw() {
+    if (balance < minWithdraw) {
+      messageEl.textContent = `Minimum withdraw is ৳${minWithdraw}. Earn more!`;
+      return;
+    }
+    messageEl.textContent = 'Withdraw request submitted successfully!';
+    balance = 0;
+    updateBalance();
+  }
+
+  updateBalance();
+</script>
+
+</body>
+</html>
