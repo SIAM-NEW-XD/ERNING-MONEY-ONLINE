@@ -1,0 +1,32 @@
+.admin-page {
+  font-family: sans-serif;
+  padding: 20px;
+  background: #111;
+  color: white;
+}
+.admin-header h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.admin-section table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #222;
+}
+.admin-section th, .admin-section td {
+  border: 1px solid #444;
+  padding: 10px;
+  text-align: center;
+}
+.admin-section button {
+  margin: 2px;
+  padding: 5px 10px;
+  background: crimson;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.admin-section button:hover {
+  background: orangered;
+}
