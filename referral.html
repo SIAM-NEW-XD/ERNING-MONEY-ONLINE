@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EarnWeb - Referral System</title>
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  body {
+    background: linear-gradient(135deg, #764ba2, #667eea);
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    margin: 0;
+    display: flex; justify-content: center; align-items: center;
+    height: 100vh;
+    perspective: 1200px;
+  }
+  .container {
+    background: rgba(255 255 255 / 0.15);
+    border-radius: 20px;
+    padding: 40px 30px;
+    width: 360px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    transform-style: preserve-3d;
+    text-align: center;
+  }
+  h2 {
+    margin-bottom: 25px;
+    font-weight: 700;
+    letter-spacing: 2px;
+  }
+  .referral-code {
+    background: rgba(255 255 255 / 0.3);
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    user-select: all;
+    cursor: pointer;
+    margin-bottom: 20px;
+  }
+  .info {
+    font-weight: 600;
+  }
+  button {
+    background: #764ba2;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 15px;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background: #667eea;
+  }
+  .message {
+    margin-top: 15px;
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Your Referral Code</h2>
+  <div id="referralCode" class="referral-code" title="Click to copy">EARNWEB12345</div>
+  <button onclick="copyCode()">Copy Code</button>
+  <p class="info">Share this code with your friends. You earn ৳10 for each signup!</p>
+  <div class="message" id="message"></div>
+</div>
+
+<script>
+  const referralCodeEl = document.getElementById('referralCode');
+  const messageEl = document.getElementById('message');
+
+  function copyCode() {
+    const code = referralCodeEl.textContent;
+    navigator.clipboard.writeText(code).then(() => {
+      messageEl.textContent = 'Referral code copied to clipboard!';
+      setTimeout(() => messageEl.textContent = '', 3000);
+    });
+  }
+</script>
+
+</body>
+</html>
